@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.Wave;
@@ -19,6 +20,15 @@ namespace Tetris.ConsoleApp
             var render = new TextConsoleRenderer(new IntVector2(80, 40));
             using (var loop = new MasterGameLoop(render))
             {
+                if (args.Any())
+                {
+                    if (args[0].ToLowerInvariant() == "-j")
+                    {
+                        loop.Tetris.KeyA = TetrisGameLoop.KeyXArcadeLeft;
+                        loop.Tetris.KeyB = TetrisGameLoop.KeyXArcadeRight;
+                    }
+                }
+
                 // on startup:
                 var music = new CachedSound( loop.ResourceManager.GetResource("music/Tetris_theme.mp3"));
                 var addFloor = new CachedSound( loop.ResourceManager.GetResource("sfx/AddFloor.mp3"));
