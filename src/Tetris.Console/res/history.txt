@@ -1,0 +1,58 @@
++-------------------_,,,,,...--------...,,,,,_---------------------------------+
+|            _.-'```                          ```'-.,                          |
+|           -  https://en.wikipedia.org/wiki/Tetris  '                         |
+|            `'-.,,_                          _,,.-'`                          |
+|                   ````'''''--------'''''````                                 |
+|                                                                              |
+|                                                                              |
+|  Tetris is a tile-matching puzzle video game, originally designed and        |
+|  programmed by Soviet Russian game designer Alexey Pajitnov                  |
+|                                                                              |
+|  The first playable version was completed on June 6, 1984,                   |
+|  while he was working for the Dorodnitsyn Computing Centre of the Academy    |
+|  of Science of the Soviet Union in Moscow.                                   |
+|                                                                              |
+|  He derived its name from the Greek numerical prefix tetra- (all of the      |
+|  game's pieces contain four segments) and tennis, Pajitnov's favorite sport. |                                                                         |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Tetris was the first entertainment software to be exported from the Soviet  |
+|  Union to the United States, where it was published by Spectrum HoloByte     |
+|  for the Commodore 64 and the IBM PC. Tetris is a popular use of tetrominoes,|
+|  the four-element special case of polyominoes. Polyominoes have been used    |
+|  in popular puzzles since at least 1907, and the name was given by the       |
+|  mathematician Solomon W. Golomb in 1953.                                    |
+|                                                                              |
+|                                                                              |
+|                  ***  ***  ***  *****  *******    ****    ******  ****   **  |
+|                  ***  ***  *** ******  *******   ******   *******  **** **   |
+|                  ***  ***  *** ******  *******  ********  ********  *** *    |
+|                  ***  ***  *** ****      ***    ***  ***  ***  ***  *****    |
+|                  ***  ***  *** ****      ***    ***  ***  ***  ***   ***     |
+|                  ***  ***  ***  ****     ***    ***  ***  ***  ***   ***     |
+|                  ********  ***    ***    ***    ***  ***  *******    ***     |
+|                  ********  ***    ***    ***     **  **   ******     ***     |
+|                  ***  ***  ***  *****    ***     ******   *** ***    ***     |
+|                  ***  ***  ***  ****     ***      ****    ***  ***   ***     |
+|                                                                 *            |
+|                                                                              |
++------------------------------------------------------------------------------+
+
+
+
+
+                              
+
+
+
+
+
+
+
+
+
+
+
+                                                                              
+                                                                             

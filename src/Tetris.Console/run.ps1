@@ -1,0 +1,1 @@
+﻿& dotnet.exe ./Tetris.ConsoleApp.dll
