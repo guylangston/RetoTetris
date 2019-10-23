@@ -33,9 +33,6 @@ namespace Tetris.Lib.Rendering
 
         
 
-        
-
-
         private TextConsoleRenderer render;
         private readonly ResourceManager resourceManager;
         private TetrisGame gameA;
