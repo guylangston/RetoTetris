@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using ConsoleZ.Drawing;
+using ConsoleZ.Drawing.Game;
 
 namespace Tetris.Lib.Rendering
 {

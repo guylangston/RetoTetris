@@ -1,3 +1,5 @@
+using ConsoleZ.Drawing.Game;
+
 namespace Tetris.Lib.Rendering
 {
     public class MasterGameLoop : GameLoopBase

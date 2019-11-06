@@ -9,16 +9,17 @@ using ConsoleZ;
 using ConsoleZ.Drawing;
 using ConsoleZ.Win32;
 using Tetris.Lib.Math;
+using VectorInt;
 
 
 namespace Tetris.Lib.Rendering
 {
-    public class TextConsoleRenderer : IRenderer2<ConsolePixel>
+    public class TextConsoleRenderer : IRenderer<ConsolePixel>
     {
         private ConsolePixel[,] active;
         private ConsolePixel[,] buffer;
 
-        public TextConsoleRenderer(IntVector2 size)
+        public TextConsoleRenderer(VectorInt2 size)
         {
             Size = size;
             buffer = new ConsolePixel[size.X, size.Y];
@@ -32,9 +33,10 @@ namespace Tetris.Lib.Rendering
 
         public bool IsColourEnabled { get; set; } = true;
         public ConsolePixel DefaultPixel = new ConsolePixel(' ', Color.LightGray, Color.Black);
-        public IntVector2 Size { get; }
+        public VectorInt2 Size { get; }
 
         public int Width => Size.X;
+        public RectInt Geometry { get; }
         public int Height => Size.Y;
         
 
@@ -89,11 +91,12 @@ namespace Tetris.Lib.Rendering
 
         public ConsolePixel this[int x, int y]
         {
-            get => this[new IntVector2(x, y)];
-            set => this[new IntVector2(x, y)] = value;
+            get => this[new VectorInt2(x, y)];
+            set => this[new VectorInt2(x, y)] = value;
         }
 
-        public ConsolePixel this[IntVector2 p]
+
+        public ConsolePixel this[VectorInt2 p]
         {
             get
             {
@@ -115,11 +118,11 @@ namespace Tetris.Lib.Rendering
 
         public ConsolePixel this[float x, float y]
         {
-            get => this[new IntVector2((int) x, (int) y)];
-            set => this[new IntVector2((int) x, (int) y)] = value;
+            get => this[new VectorInt2((int) x, (int) y)];
+            set => this[new VectorInt2((int) x, (int) y)] = value;
         }
 
-        public void DrawText(IntVector2 p, string txt, ConsolePixel style)
+        public void DrawText(VectorInt2 p, string txt, ConsolePixel style)
         {
             if (txt == null) return;
             for (int i = 0; i < txt.Length; i++)
@@ -129,7 +132,7 @@ namespace Tetris.Lib.Rendering
         }
 
 
-        public void DrawLine(IntVector2 tl, IntVector2 br, ConsolePixel pixel) => this.DrawLine(tl.X, tl.Y, br.X, br.Y, pixel);
+        public void DrawLine(VectorInt2 tl, VectorInt2 br, ConsolePixel pixel) => this.DrawLine(tl.X, tl.Y, br.X, br.Y, pixel);
 
 
         public void DrawText(int x, int y, string txt, ConsolePixel style)

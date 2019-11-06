@@ -3,9 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Numerics;
 using ConsoleZ.Drawing;
+using ConsoleZ.Drawing.Game;
 using Newtonsoft.Json;
 using Tetris.Lib.Logic;
 using Tetris.Lib.Math;
+using VectorInt;
 
 
 namespace Tetris.Lib.Rendering
@@ -213,7 +215,7 @@ namespace Tetris.Lib.Rendering
             // Particles
             foreach (var bb in b)
             {
-                render[new IntVector2(bb.Position)] = bb.Pixel;
+                render[new VectorInt2(bb.Position)] = bb.Pixel;
             }
             
             render.Update();
@@ -221,7 +223,7 @@ namespace Tetris.Lib.Rendering
             Console.Title = $"FPS: {FramesPerSecond:0.0}/sec, {gameA.State} -- {FrameCount}";
         }
 
-        public  void Draw(TetrisGame game, IntVector2 surface, IntVector2 scores)
+        public  void Draw(TetrisGame game, VectorInt2 surface, VectorInt2 scores)
         {
             
             var styleText= new ConsolePixel(' ', Color.Yellow, Color.Black);
@@ -289,7 +291,7 @@ namespace Tetris.Lib.Rendering
             Console.ResetColor();
         }
 
-        private void Draw(Piece p, IntVector2 loc)
+        private void Draw(Piece p, VectorInt2 loc)
         {
             foreach (var b in p.GetBricks())
             {

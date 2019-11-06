@@ -2,6 +2,7 @@
 using System.Numerics;
 using ConsoleZ.Drawing;
 using Tetris.Lib.Math;
+using VectorInt;
 
 namespace Tetris.Lib.Rendering
 {
@@ -13,11 +14,11 @@ namespace Tetris.Lib.Rendering
         public Vector2 Speed { get; set; } // in 1/10ths
 
 
-        public void Step(IRenderer2<ConsolePixel> render, float time)
+        public void Step(IRenderer<ConsolePixel> render, float time)
         {
-            var p = new IntVector2(Position);
+            var p = new VectorInt2(Position);
             var next = Position + Speed*time;
-            var i = new IntVector2(next);
+            var i = new VectorInt2(next);
 
             if (i == p)
             {
@@ -46,13 +47,13 @@ namespace Tetris.Lib.Rendering
             
         }
 
-        private bool Collision(IRenderer2<ConsolePixel> render, Vector2 next)
+        private bool Collision(IRenderer<ConsolePixel> render, Vector2 next)
         {
             if (next.X < 0 || next.X > render.Width) return true;
             if (next.Y < 0 || next.Y > render.Height) return true;
 
-            var p = new IntVector2(Position);
-            var i = new IntVector2(next);
+            var p = new VectorInt2(Position);
+            var i = new VectorInt2(next);
 
             if (p == i) return false;
 

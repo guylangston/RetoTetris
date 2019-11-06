@@ -3,27 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VectorInt;
 
 namespace Tetris.Lib.Math
 {
 
     
-    public interface IMask : IMatrix2<bool>, IEnumerable<IntVector2>
+    public interface IMask : IMatrix2<bool>, IEnumerable<VectorInt2>
     {
 
     }
 
     public class Mask : Matrix2<bool>, IMask
     {
-        public Mask(IntVector2 size) : base(size)
+        public Mask(VectorInt2 size) : base(size)
         {
         }
 
-        public Mask(IEnumerable<IntVector2> points) : base(points, true)
+        public Mask(IEnumerable<VectorInt2> points) : base(points, true)
         {
         }
 
-        public IEnumerator<IntVector2> GetEnumerator() => base.ForEach(true).GetEnumerator();
+        public IEnumerator<VectorInt2> GetEnumerator() => base.ForEach(true).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public static Mask Create(IReadOnlyList<string> lines)
@@ -50,9 +51,9 @@ namespace Tetris.Lib.Math
             switch (r % 4)
             {
                 case 0 : return matrix2;
-                case 1 : return new Mask(matrix2.Select(p=>new IntVector2(matrix2.Size.Y - p.Y -1, p.X )));
-                case 2 : return new Mask(matrix2.Select(p=>new IntVector2(matrix2.Size.X - p.X -1,  matrix2.Size.Y - p.Y -1 )));
-                case 3 : return new Mask(matrix2.Select(p=>new IntVector2(p.Y, matrix2.Size.X - p.X -1)));
+                case 1 : return new Mask(matrix2.Select(p=>new VectorInt2(matrix2.Size.Y - p.Y -1, p.X )));
+                case 2 : return new Mask(matrix2.Select(p=>new VectorInt2(matrix2.Size.X - p.X -1,  matrix2.Size.Y - p.Y -1 )));
+                case 3 : return new Mask(matrix2.Select(p=>new VectorInt2(p.Y, matrix2.Size.X - p.X -1)));
                 default: throw new Exception();
             }
         }

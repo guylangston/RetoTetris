@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VectorInt;
 
 namespace Tetris.Lib.Math
 {
@@ -8,12 +9,12 @@ namespace Tetris.Lib.Math
 
     public interface IMatrix2<T> : IEquatable<IMatrix2<T>>
     {
-        T this[IntVector2 pos] { get; set; }
+        T this[VectorInt2 pos] { get; set; }
         T this[int x, int y] { get; set; }
-        IntVector2 Size { get; }
+        VectorInt2 Size { get; }
 
-        IEnumerable<IntVector2> ForEach(T match);
-        IEnumerable<(IntVector2 pos, T data)> ForAll(bool includeDefault = false);
+        IEnumerable<VectorInt2> ForEach(T match);
+        IEnumerable<(VectorInt2 pos, T data)> ForAll(bool includeDefault = false);
     }
 
 
@@ -21,13 +22,13 @@ namespace Tetris.Lib.Math
     {
         private readonly T[,] inner;
 
-        public Matrix2(IntVector2 size)
+        public Matrix2(VectorInt2 size)
         {
             Size = size;
             inner = new T[Size.X, Size.Y];
         }
 
-        public Matrix2(IEnumerable<IntVector2> points, T fill)
+        public Matrix2(IEnumerable<VectorInt2> points, T fill)
         {
             var temp = points.ToArray();
             Size = (temp.Max(x=>x.X)+1, temp.Max(x=>x.Y)+1);
@@ -40,7 +41,7 @@ namespace Tetris.Lib.Math
 
         // Soft get (range check yields 0)
         // Hard set
-        public T this[IntVector2 pos]
+        public T this[VectorInt2 pos]
         {
             get
             {
@@ -55,11 +56,11 @@ namespace Tetris.Lib.Math
 
         public T this[int x, int y]
         {
-            get => this[new IntVector2(x, y)];
-            set => this[new IntVector2(x, y)] = value;
+            get => this[new VectorInt2(x, y)];
+            set => this[new VectorInt2(x, y)] = value;
         }
 
-        public IntVector2 Size { get; }
+        public VectorInt2 Size { get; }
 
 
         public static Matrix2<T> Create(IReadOnlyList<string> lines, Func<char, T> isOn)
@@ -85,26 +86,26 @@ namespace Tetris.Lib.Math
 
         }
 
-        public IEnumerable<IntVector2> ForEach()
+        public IEnumerable<VectorInt2> ForEach()
         {
             for(int x=0; x<Size.X; x++)
             for (int y = 0; y < Size.Y; y++)
             {
-                if (inner[x,y] != null) yield return new IntVector2(x,y);
+                if (inner[x,y] != null) yield return new VectorInt2(x,y);
             }
         }
 
         
-        public IEnumerable<IntVector2> ForEach(T match)
+        public IEnumerable<VectorInt2> ForEach(T match)
         {
             for(int x=0; x<Size.X; x++)
             for (int y = 0; y < Size.Y; y++)
             {
-                if (match.Equals(inner[x,y])) yield return new IntVector2(x,y);
+                if (match.Equals(inner[x,y])) yield return new VectorInt2(x,y);
             }
         }
 
-        public IEnumerable<(IntVector2 pos, T data)> ForAll(bool includeDefault = false)
+        public IEnumerable<(VectorInt2 pos, T data)> ForAll(bool includeDefault = false)
         {
             for(int x=0; x<Size.X; x++)
             for (int y = 0; y < Size.Y; y++)
@@ -112,11 +113,11 @@ namespace Tetris.Lib.Math
                 var d = inner[x, y];
                 if (includeDefault)
                 {
-                    yield return (new IntVector2(x, y), d);
+                    yield return (new VectorInt2(x, y), d);
                 }
                 else if (!object.Equals(d, default(T)))
                 {
-                    yield return (new IntVector2(x, y), d);
+                    yield return (new VectorInt2(x, y), d);
                 }
             }
         }

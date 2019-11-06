@@ -7,6 +7,7 @@ using NAudio.Wave.SampleProviders;
 using Tetris.Lib.Logic;
 using Tetris.Lib.Math;
 using Tetris.Lib.Rendering;
+using VectorInt;
 
 namespace Tetris.ConsoleApp
 {
@@ -21,7 +22,7 @@ namespace Tetris.ConsoleApp
              * So sound functionality is implemented here
              *
              */
-            var render = new TextConsoleRenderer(new IntVector2(80, 40));
+            var render = new TextConsoleRenderer(new VectorInt2(80, 40));
             using (var loop = new MasterGameLoop(render))
             {
                 // on startup:

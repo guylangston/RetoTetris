@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Tetris.Lib.Math;
 using Tetris.Lib.Util;
+using VectorInt;
 
 
 namespace Tetris.Lib.Logic
@@ -119,7 +118,7 @@ namespace Tetris.Lib.Logic
 
             Active = new Piece(this, Tetromino.All.First(x => x.Name == dto.ActiveT))
             {
-                Position = new IntVector2(dto.ActiveX, dto.ActiveY), 
+                Position = new VectorInt2(dto.ActiveX, dto.ActiveY), 
                 Rotation = dto.ActiveR
             };
 
@@ -274,7 +273,7 @@ namespace Tetris.Lib.Logic
             PieceCount++;
             return new Piece(this, next)
             {
-                Position = new IntVector2(Width/2, 0),
+                Position = new VectorInt2(Width/2, 0),
                 Rotation = 0
             };
         }
@@ -293,7 +292,7 @@ namespace Tetris.Lib.Logic
             return false;
         }
 
-        static bool Collision(ICollection<IntVector2> a, ICollection<IntVector2> b)
+        static bool Collision(ICollection<VectorInt2> a, ICollection<VectorInt2> b)
         {
             foreach (var aa in a)
             {
