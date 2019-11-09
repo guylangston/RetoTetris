@@ -5,7 +5,7 @@ using ConsoleZ.Drawing.Game;
 
 namespace Tetris.Lib.Rendering
 {
-    public class StaticPageLoop : GameLoopProxy
+    public class StaticPageLoop : GameScene
     {
         public IGameLoop Next { get; set; }
         private TextConsoleRenderer renderer;

@@ -22,7 +22,7 @@ namespace Tetris.Lib.Rendering
             {
                 active = value;
                 if (value is GameLoopBase sp) sp.Reset();
-                if (value is GameLoopProxy p) p.Reset();
+                if (value is GameScene p) p.Reset();
             }
         }
 

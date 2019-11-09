@@ -15,7 +15,7 @@ namespace Tetris.Lib.Rendering
 
 
 
-    public class TetrisGameLoop : GameLoopProxy
+    public class TetrisGameLoop : GameScene
     {
         public TetrisGameLoop(TextConsoleRenderer renderer, ResourceManager resourceManager, MasterGameLoop master ) : base(master)
         {
