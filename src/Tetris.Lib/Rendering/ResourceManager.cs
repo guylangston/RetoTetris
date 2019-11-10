@@ -8,29 +8,27 @@ namespace Tetris.Lib.Rendering
 {
     public class ResourceManager
     {
-        private string dir;
+        public string RootDir { get; set; }
 
         public ResourceManager()
         {
-
-            
-            var source = @"C:\Projects\EulerProject\NonEuler\Tetris\src\Tetris.Console\res";
+            var source = @"C:\Projects\RetroTetris\src\Tetris.Console\res";
             if (Directory.Exists( source))
             {
-                dir = source;
+                RootDir = source;
                 return;
             }
 
             if (Directory.GetCurrentDirectory().ToLowerInvariant().Trim('\\').EndsWith("res"))
             {
-                dir = "./";
+                RootDir = "./";
                 return;
             }
 
             var sub = Path.Combine(Directory.GetCurrentDirectory(), "res");
             if (Directory.Exists(sub))
             {
-                dir = sub;
+                RootDir = sub;
                 return;
             }
 
@@ -39,7 +37,7 @@ namespace Tetris.Lib.Rendering
         }
 
 
-        public string GetResource(string relfile) => Path.Combine(dir, relfile);
+        public string GetResource(string relfile) => Path.Combine(RootDir, relfile);
     }
     
     
