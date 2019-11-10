@@ -1,48 +1,45 @@
+using System;
+using ConsoleZ.Drawing;
 using ConsoleZ.Drawing.Game;
 
 namespace Tetris.Lib.Rendering
 {
-    public class MasterGameLoop : GameLoopBase
+    public class MasterGameLoop : GameScene<IRenderingGameLoop<ConsolePixel>, ConsolePixel>
     {
-        public TetrisGameLoop Tetris { get; private set; }
-        public StaticPageLoop Intro { get; private set; }
-        public StaticPageLoop Scores { get; private set; }
-        public StaticPageLoop History { get; private set; }
-
-        public ResourceManager ResourceManager { get; } = new ResourceManager();
-
-        private TextConsoleRenderer renderer;
-
         private IGameLoop active;
+
+        public MasterGameLoop(IRenderingGameLoop<ConsolePixel> parent) : base(parent)
+        {
+        }
+
+        public TetrisGameLoop  Tetris          { get; private set; }
+        public StaticPageLoop  Intro           { get; private set; }
+        public StaticPageLoop  Scores          { get; private set; }
+        public StaticPageLoop  History         { get; private set; }
+        public ResourceManager ResourceManager { get; } = new ResourceManager();
 
         public IGameLoop Active
         {
-            get { return active; }
+            get => active;
             set
             {
                 active = value;
-                if (value is GameLoopBase sp) sp.Reset();
-                if (value is GameScene p) p.Reset();
+                active.Reset();
             }
-        }
-
-        public MasterGameLoop(TextConsoleRenderer renderer)
-        {
-            this.renderer = renderer;
         }
 
         public override void Init()
         {
-            Tetris = new TetrisGameLoop(renderer, this.ResourceManager, this);
+            Tetris = new TetrisGameLoop(this.ResourceManager, this);
             Tetris.Init();
 
-            Intro = new StaticPageLoop(renderer, this, "intro.txt");
+            Intro = new StaticPageLoop(this, "intro.txt");
             Intro.Init();
 
-            History = new StaticPageLoop(renderer, this, "history.txt");
+            History = new StaticPageLoop( this, "history.txt");
             History.Init();
 
-            Scores = new StaticPageLoop(renderer, this, "hiscore.txt");
+            Scores = new StaticPageLoop( this, "hiscore.txt");
             Scores.Init();
 
             // Loop
@@ -50,13 +47,25 @@ namespace Tetris.Lib.Rendering
             History.Next = Scores;
             Scores.Next = Intro;
 
-
             // Start with intro
             Active = Intro;
         }
 
         public override void Step(float elapsedSec)
         {
+            if (active != Tetris)
+            {
+                if (Input.IsKeyPressed(ConsoleKey.D1))
+                {
+                    Active = Tetris;
+                }
+                
+                if (Input.IsKeyPressed(ConsoleKey.Q))
+                {
+                    Environment.Exit(0);
+                }
+            }
+            
             active.Step(elapsedSec);
         }
 

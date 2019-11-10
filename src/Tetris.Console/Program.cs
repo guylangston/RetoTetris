@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ConsoleZ.Drawing;
+using ConsoleZ.Drawing.Game;
+using ConsoleZ.Win32;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Tetris.Lib.Logic;
@@ -23,41 +26,51 @@ namespace Tetris.ConsoleApp
              *
              */
             var render = new TextConsoleRenderer(new VectorInt2(80, 40));
-            using (var loop = new MasterGameLoop(render))
+            render.Init();
+
+
+            using (var masterLoop = new ConsoleGameLoop<ConsolePixel>(new InputProvider(), render))
             {
-                // on startup:
-                var music = new CachedSound( loop.ResourceManager.GetResource("music/Tetris_theme.mp3"));
-                var addFloor = new CachedSound( loop.ResourceManager.GetResource("sfx/AddFloor.mp3"));
-                var lineCompelete = new CachedSound( loop.ResourceManager.GetResource("sfx/LineComplete.mp3"));
-
-                // later in the app...
-                AudioPlaybackEngine.Instance.PlaySound(music);
-                loop.Init();
-
-                if (args.Any())
+                using (var loop = new MasterGameLoop(masterLoop))
                 {
-                    if (args[0].ToLowerInvariant() == "-j")
-                    {
-                        loop.Tetris.KeyA = TetrisGameLoop.KeyXArcadeLeft;
-                        loop.Tetris.KeyB = TetrisGameLoop.KeyXArcadeRight;
-                    }
-                }
-
-                loop.Tetris.GameA.OnEvent += (sender, ge) =>
-                {
-                    if (ge.Event == TetrisEvents.AddFloor)
-                    {
-                        AudioPlaybackEngine.Instance.PlaySound(addFloor);
-                    }
-                    if (ge.Event == TetrisEvents.LineComplete)
-                    {
-                        AudioPlaybackEngine.Instance.PlaySound(lineCompelete);
-                    }
+                    // on startup:
+                    var music         = new CachedSound( loop.ResourceManager.GetResource("music/Tetris_theme.mp3"));
+                    var addFloor      = new CachedSound( loop.ResourceManager.GetResource("sfx/AddFloor.mp3"));
+                    var lineCompelete = new CachedSound( loop.ResourceManager.GetResource("sfx/LineComplete.mp3"));
                     
-                };
+                    if (args.Any())
+                    {
+                        if (args[0].ToLowerInvariant() == "-j")
+                        {
+                            loop.Tetris.KeyA = TetrisGameLoop.KeyXArcadeLeft;
+                            loop.Tetris.KeyB = TetrisGameLoop.KeyXArcadeRight;
+                        }
+                    }
 
-                loop.Start();
+                    masterLoop.Scene = loop;
+                    masterLoop.Init();    // will init loop
+                    
+                    // After init...
+                    AudioPlaybackEngine.Instance.PlaySound(music);
+                    loop.Tetris.GameA.OnEvent += (sender, ge) =>
+                    {
+                        if (ge.Event == TetrisEvents.AddFloor)
+                        {
+                            AudioPlaybackEngine.Instance.PlaySound(addFloor);
+                        }
+                        if (ge.Event == TetrisEvents.LineComplete)
+                        {
+                            AudioPlaybackEngine.Instance.PlaySound(lineCompelete);
+                        }
+                    
+                    };
+                    
+                    masterLoop.Start();
+                }
+                
             }
+            
+            
         }
     }
 }

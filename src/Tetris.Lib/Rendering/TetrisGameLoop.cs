@@ -12,14 +12,12 @@ using VectorInt;
 
 namespace Tetris.Lib.Rendering
 {
-
-
-
-    public class TetrisGameLoop : GameScene
+    
+    public class TetrisGameLoop : GameScene<MasterGameLoop, ConsolePixel>
     {
-        public TetrisGameLoop(TextConsoleRenderer renderer, ResourceManager resourceManager, MasterGameLoop master ) : base(master)
+        public TetrisGameLoop( ResourceManager resourceManager, MasterGameLoop master ) : base(master)
         {
-            render = renderer;
+            
             this.resourceManager = resourceManager;
             this.gameA = new TetrisGame();
             this.gameB = new TetrisGame();
@@ -33,9 +31,9 @@ namespace Tetris.Lib.Rendering
         
         }
 
-        
 
-        private TextConsoleRenderer render;
+
+        private IRenderer<ConsolePixel> render => Parent.Renderer;
         private readonly ResourceManager resourceManager;
         private TetrisGame gameA;
         private TetrisGame gameB;
@@ -66,16 +64,13 @@ namespace Tetris.Lib.Rendering
         {
             this.bg = System.IO.File.ReadAllLines(resourceManager.GetResource(@"background.txt"));
 
-            render.Init();
-            
-
         }
 
         public override void Reset()
         {
             base.Reset();
-            gameA.SendInput(Input.Start);
-            gameB.SendInput(Input.Start);
+            gameA.SendInput(Logic.Input.Start);
+            gameB.SendInput(Logic.Input.Start);
         }
 
         public class KeyMap
@@ -134,60 +129,36 @@ namespace Tetris.Lib.Rendering
                 bb.Step(render, elapsedSec);    
             }
 
-            if (System.Console.KeyAvailable)
+            if (Input.IsKeyPressed())
             {
-                var kk = System.Console.ReadKey();
-                var k = kk.Key;
-                if ((kk.Modifiers & ConsoleModifiers.Control) > 0 && kk.Key == ConsoleKey.S)
+//                
+//                if ((kk.Modifiers & ConsoleModifiers.Control) > 0 && kk.Key == ConsoleKey.S)
+//                {
+//                    File.WriteAllText(Path.Combine(resourceManager.GetResource("./saves/"), $"Tetris-GameA-{DateTime.Now.Ticks}.json"), JsonConvert.SerializeObject(gameA.CaptureState(), Formatting.Indented));
+//                    File.WriteAllText(Path.Combine(resourceManager.GetResource("./saves/"), $"Tetris-GameB-{DateTime.Now.Ticks}.json"), JsonConvert.SerializeObject(gameB.CaptureState(), Formatting.Indented));
+//                }
+//                if ((kk.Modifiers & ConsoleModifiers.Control) > 0 && kk.Key == ConsoleKey.L)
+//                {
+//                    gameA.Load(JsonConvert.DeserializeObject<TetrisGameStateDto>(File.ReadAllText(resourceManager.GetResource("game-default.json"))));
+//                    
+//                }
+
+                if (Input.IsKeyPressed(KeyA.Left))     gameA.SendInput(Logic.Input.MoveLeft);
+                if (Input.IsKeyPressed(KeyA.Right))    gameA.SendInput(Logic.Input.MoveRight);
+                if (Input.IsKeyPressed(KeyA.Drop))     gameA.SendInput(Logic.Input.Drop);
+                if (Input.IsKeyPressed(KeyA.Rotate))   gameA.SendInput(Logic.Input.Rotate);
+
+                if (Input.IsKeyPressed(KeyB.Left))     gameB.SendInput(Logic.Input.MoveLeft);
+                if (Input.IsKeyPressed(KeyB.Right))    gameB.SendInput(Logic.Input.MoveRight);
+                if (Input.IsKeyPressed(KeyB.Drop))     gameB.SendInput(Logic.Input.Drop);
+                if (Input.IsKeyPressed(KeyB.Rotate))   gameB.SendInput(Logic.Input.Rotate);
+
+                
+                if (Input.IsKeyPressed(ConsoleKey.Escape))
                 {
-                    File.WriteAllText(Path.Combine(resourceManager.GetResource("./saves/"), $"Tetris-GameA-{DateTime.Now.Ticks}.json"), JsonConvert.SerializeObject(gameA.CaptureState(), Formatting.Indented));
-                    File.WriteAllText(Path.Combine(resourceManager.GetResource("./saves/"), $"Tetris-GameB-{DateTime.Now.Ticks}.json"), JsonConvert.SerializeObject(gameB.CaptureState(), Formatting.Indented));
-                }
-                if ((kk.Modifiers & ConsoleModifiers.Control) > 0 && kk.Key == ConsoleKey.L)
-                {
-                    gameA.Load(JsonConvert.DeserializeObject<TetrisGameStateDto>(File.ReadAllText(resourceManager.GetResource("game-default.json"))));
-                    
-                }
-                else if (k == KeyA.Left)
-                {
-                    gameA.SendInput(Input.MoveLeft);
-                }
-                else if (k == KeyA.Right)
-                {
-                    gameA.SendInput(Input.MoveRight);
-                }
-                else if (k == KeyA.Drop)
-                {
-                    gameA.SendInput(Input.Drop);
-                }
-                else if (k == KeyA.Rotate)
-                {
-                    gameA.SendInput(Input.Rotate);
-                }
-                else if (k == KeyB.Left)
-                {
-                    gameB.SendInput(Input.MoveLeft);
-                }
-                else if (k == KeyB.Right)
-                {
-                    gameB.SendInput(Input.MoveRight);
-                }
-                else if (k == KeyB.Drop)
-                {
-                    gameB.SendInput(Input.Drop);
-                }
-                else if (k == KeyB.Rotate)
-                {
-                    gameB.SendInput(Input.Rotate);
-                }
-                else if (k == ConsoleKey.Escape)
-                {
-                    gameA.SendInput(Input.Quit);
-                    gameB.SendInput(Input.Quit);
-                    if (Parent is MasterGameLoop m)
-                    {
-                        m.Active = m.Scores;
-                    }
+                    gameA.SendInput(Logic.Input.Quit);
+                    gameB.SendInput(Logic.Input.Quit);
+                    Parent.Active = Parent.Scores;
                 }
                 
             }
@@ -204,7 +175,7 @@ namespace Tetris.Lib.Rendering
         
         public override void Draw()
         {
-            render.Fill(render.DefaultPixel);
+            render.Fill(render.DefaultPixel());
 
             render.DrawSprite(0, 0, bg, Color.Gray, Color.Black);
 

@@ -5,18 +5,16 @@ using ConsoleZ.Drawing.Game;
 
 namespace Tetris.Lib.Rendering
 {
-    public class StaticPageLoop : GameScene
+    public class StaticPageLoop : GameScene<MasterGameLoop, ConsolePixel>
     {
         public IGameLoop Next { get; set; }
-        private TextConsoleRenderer renderer;
+        private IRenderer<ConsolePixel> renderer => Parent.Renderer;
         private MasterGameLoop master;
         private readonly string bgfile;
         private string[] bg;
 
-        public StaticPageLoop(TextConsoleRenderer renderer, MasterGameLoop master, string bgfile) : base(master)
+        public StaticPageLoop(MasterGameLoop master, string bgfile) : base(master)
         {
-            
-            this.renderer = renderer;
             this.master = master;
             this.bgfile = bgfile;
         }
@@ -67,7 +65,7 @@ namespace Tetris.Lib.Rendering
 
         public override void Draw()
         {
-            renderer.Fill(renderer.DefaultPixel);
+            renderer.Fill(renderer.DefaultPixel());
 
             renderer.DrawSprite(0, 0, bg, Color.Gray, Color.Black);
 

@@ -14,6 +14,20 @@ using VectorInt;
 
 namespace Tetris.Lib.Rendering
 {
+    public static class TextConsoleRendererFeatures
+    {
+        static  readonly ConsolePixel defPixel = new ConsolePixel(' ', Color.LightGray, Color.Black);
+        public static ConsolePixel DefaultPixel(this IRenderer<ConsolePixel> renderer) => defPixel; 
+        
+        public static void DrawSprite(this IRenderer<ConsolePixel> render, int x, int y, string[] sprite, Color fg, Color bg)
+        {
+            for(var a = 0; a< sprite.Length; a++)
+            for(var b = 0; b< sprite[a].Length; b++)
+                render[x+b, y+a] = new ConsolePixel(sprite[a][b], fg, bg);
+        }
+    }
+    
+    
     public class TextConsoleRenderer : IRenderer<ConsolePixel>
     {
         private ConsolePixel[,] active;
@@ -43,14 +57,15 @@ namespace Tetris.Lib.Rendering
         private IBufferedAbsConsole<CHAR_INFO> screenDevice;
         public void Init()
         {
-            ConsoleZ.DirectConsole.MaximizeWindow();
-            ConsoleZ.DirectConsole.Setup(80, 40, 10, 10, "Consolas");
+            ConsoleZ.DirectConsole.Setup(Size.X, Size.Y, 10, 10, "Consolas");
             ConsoleZ.DirectConsole.Fill(' ', 0);
             screenDevice = ConsoleZ.DirectConsole.Singleton;
         }
 
         private void WriteUsingConsoleZ()
         {
+            if (screenDevice == null) throw new Exception("Init() must be called");
+            
             var ww = System.Math.Min(screenDevice.Width, Width);
             var hh = System.Math.Min(screenDevice.Height, Height);
             for (var x = 0; x < ww; x++)
@@ -149,13 +164,7 @@ namespace Tetris.Lib.Rendering
             }
         }
 
-        public void DrawSprite(int x, int y, string[] sprite, Color fg, Color bg)
-        {
-            for(var a = 0; a< sprite.Length; a++)
-            for(var b = 0; b< sprite[a].Length; b++)
-                this[x+b, y+a] = new ConsolePixel(sprite[a][b], fg, bg);
-            
-        }
+        
 
         public virtual void Update()
         {
