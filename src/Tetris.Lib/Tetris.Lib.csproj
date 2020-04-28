@@ -13,8 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
-    <ProjectReference Include="..\..\..\VectorInt\VectorInt.csproj" />
+    <PackageReference Include="VectorInt" Version="0.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ConsoleZ\src\ConsoleZ\ConsoleZ.csproj" />
+      </ItemGroup>
 
 </Project>
